@@ -1,0 +1,13 @@
+server:
+  build: .
+  dockerfile: etc/docker/ApachePython/dockerfile
+  volumes:
+    - './sites:/home/app/src'
+    - './etc/php/logs:/var/log/apache2'
+    - './etc/php:/usr/local/etc/php'
+    - './etc/apache2/apache2.conf:/etc/apache2/conf-enabled/apache2.conf'
+    - './etc/apache2/hosts.conf:/etc/apache2/sites-enabled/hosts.conf'
+    - './etc/apache2/httpd.conf:/etc/apache2/httpd.conf'
+    - './etc/apache2/pid:/var/run/apache2.pid'
+  ports:
+   - "8080:80"

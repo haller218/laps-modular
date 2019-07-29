@@ -1,0 +1,29 @@
+FROM alpine:lasted
+
+RUN apk update --no-progress -q &&\
+    apk add --no-progress -q python3 &&\
+    apk add --no-progress -q apache2
+
+# ADMIN USER
+RUN adduser -D -h /home/app -s /bin/false app app
+ENV HOME=/home/app
+
+# API : CONFIG
+COPY src/requirements.txt $HOME
+
+COPY etc/config/upstart.sh $HOME
+
+# ADMIN
+RUN chown -R app:app $HOME
+
+# CHANGE TO WORKDIRECTORY
+USER root
+WORKDIR $HOME
+
+# COPY : FILES
+# COPY . $HOME
+RUN chown -R app:app $HOME/*
+
+USER app
+# FINIshin
+CMD ["/bin/sh","/home/app/upstart.sh"]
